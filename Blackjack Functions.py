@@ -31,7 +31,7 @@ est associée (Dans notre exemple : 1) """
 def valeurCarte(carte):
     if '1 de' in carte:                                                                                                 # On filtre le cas où le joueur a un as
         value = int(input("Vous disposez d'un as, souhaitez-vous que sa valeur soit 1 ou 11 ? "))
-    for range_1 in range(2, 11, 1):                                                                                    # On filtre ensuite les cartes de 2  à 10
+    for range_1 in range(2, 11, 1):                                                                                     # On filtre ensuite les cartes de 2  à 10
         if str(range_1) in carte :
             value = range_1
     if 'valet' in carte or 'dame' in carte or 'roi' in carte:                                                           # On filtre les têtes
@@ -44,9 +44,20 @@ avec n le nombre de joueurs de la partie """
 
 def initPioche(n):
     pioche = []                                                                                                         # On crée une liste "Pioche" qui sera utilisée pour stocker les cartes
-    for range_1 in range(0,n, 1):                                                                                      # On crée une pioche contenant n paquets de cartes
+    for range_1 in range(0,n, 1):                                                                                       # On crée une pioche contenant n paquets de cartes
         for range_2 in range(0, len(paquet()), 1):
             pioche.append(paquet()[range_2])
     return sample(pioche, len(pioche))                                                                                  # On retourne une pioche triée aléatoirement
 
+
+""" Il s'agit ici d'écrire une fonction qui reçoit la pioche et, de façon optionnelle, le nombre de cartes à piocher,
+et renvoit la liste des cartes piochées"""
+
+def piocheCarte(p, x=1):
+    taken_cards = []                                                                                                    # On crée une liste qui contiendra les cartes piochées
+    for i in range(0, x, 1):
+        card = p[0]
+        taken_cards.append(card)                                                                                        # On ajoute la carte à la liste des cartes piochées
+        p.pop(0)                                                                                                        # On supprime la carte de la pioche
+    return taken_cards                                                                                                  # On renvoit la liste des cartes piochées
 
