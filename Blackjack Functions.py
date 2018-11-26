@@ -95,3 +95,22 @@ def premierTour(joueurs):
         players[joueurs[range_1]] = valeurCarte(taken_cards[0]) + valeurCarte(taken_cards[1])                           # On ajoute la valeur des cartes piochées à son score
         return players                                                                                                  # On retourne le dictionnaire qui associe les joueurs et les scores
 
+
+"""" Il s'agit ici de créer une fonction qui reçoit un dictionnaire de scores et renvoit le nom du gagnant et son score 
+en filtrant les scores supérieurs à 21"""
+
+def gagnant(scores):
+    list_scores = list(scores.values())                                                                                 # Pour faciliter les manipulations, on crée une liste qui contient les scores
+    list_players = list(scores.keys())                                                                                  # On crée une liste qui contient les joueurs
+    list_scores_inrange = []                                                                                            # On crée une liste vide qui va contenir les scores inférieurs à 21
+    list_players_inrange = []                                                                                           # On crée une liste vide qui va contenir les joueurs ayant des scores inférieurs à 21
+    for range_1 in range(0, len(list_scores)):                                                                          # On filtre les scores supérieurs à 21
+        if list_scores[range_1] <= 21:
+            list_scores_inrange.append(list_scores[range_1])
+            list_players_inrange.append(list_players[range_1])
+    maximum = min(list_scores_inrange) - 1                                                                              # On fixe un maximum arbitraire
+    for range_2 in range(0, len(list_scores_inrange), 1):
+        if maximum < list_scores_inrange[range_2]:                                                                      # On cherche le maximum des scores
+            maximum = list_scores_inrange[range_2]
+            maximum_step = range_2
+    return {list_players_inrange[maximum_step], list_scores_inrange[maximum_step]}                                      # On retourne un dictionnaire qui contient le nom du gagnant et son score
