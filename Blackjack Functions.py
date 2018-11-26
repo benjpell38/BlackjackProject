@@ -59,5 +59,39 @@ def piocheCarte(p, x=1):
         card = p[0]
         taken_cards.append(card)                                                                                        # On ajoute la carte à la liste des cartes piochées
         p.pop(0)                                                                                                        # On supprime la carte de la pioche
-    return taken_cards                                                                                                  # On renvoit la liste des cartes piochées
+        return taken_cards                                                                                              # On renvoit la liste des cartes piochées
+
+
+""" Il s'agit ici d'écrire une fonction qui reçoit le nombre de joueurs, demande à l'utilisateur le nom de chaque joueur
+et renvoit la liste qui les contient """
+
+def initJoueurs(n):
+    joueurs = []                                                                                                        # On crée une liste pour les noms des joueurs
+    for range_1 in range(0, n, 1):
+        name = str(input("Entrez le nom du joueur " + n+1 + " : "))
+        joueurs.append(name)                                                                                            # On ajoute le nom du joueur à la liste pré-établie
+    return joueurs                                                                                                      # On renvoit la liste de joueurs
+
+
+""" Il s'agit ici d'écrire une fonction qui reçoit la liste des noms des joueurs  et une valeur initiale de score pour
+les joueurs et renvoit un dictionnaire qui associe les joueurs à leurs scores initiaux """
+
+def initScores(joueurs,v=0):
+    dictionnary = {}                                                                                                    # On crée un dictionnaire vide pour stocker les noms des joueurs et leurs scores
+    for range_1 in range(0, len(joueurs), 1):
+        dictionnary[joueurs[step]] = v
+    return dictionnary                                                                                                  # On retourne le dictionnaire qui contient les joueurs et leurs scores
+
+
+""" Il s'agit ici d'écrire une fonction qui reçoit la liste des joueurs et construit un dictionnaire de scores après
+avoir pioché deux cartes pour chaque joueur et avoir ajouté la valeur des deux cartes à leur score qu'elle renvoit 
+ensuite """
+
+def premierTour(joueurs):
+    players = initScores(joueurs)                                                                                       # On crée le dictionnaire de joueurs
+    cards = initPioche(len(joueurs))                                                                                    # On crée la pioche
+    for range_1 in range (0, len(joueurs), 1):
+        taken_cards = piocheCarte(cards, 2)                                                                             # On crée une liste qui contient les deux cartes piochées
+        players[joueurs[range_1]] = valeurCarte(taken_cards[0]) + valeurCarte(taken_cards[1])                           # On ajoute la valeur des cartes piochées à son score
+        return players                                                                                                  # On retourne le dictionnaire qui associe les joueurs et les scores
 
