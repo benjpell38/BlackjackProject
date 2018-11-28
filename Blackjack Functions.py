@@ -10,7 +10,14 @@
 
 from random import sample
 
-"""" Il s'agit ici d'écrire la fonction paquet() qui permet de générer le paquet de 52 cartes nécessaire au jeu de Blackjack"""
+
+"""------------------------------------------------------------------------------------------------------------------
+                                                      Partie A.1
+   ------------------------------------------------------------------------------------------------------------------"""
+
+
+"""" Il s'agit ici d'écrire la fonction paquet() qui permet de générer le paquet de 52 cartes nécessaire au jeu de
+Blackjack"""
 
 def paquet():
     valeur_carte = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'valet', 'dame', 'roi']                          # On définit ici les valeurs des cartes
@@ -60,6 +67,11 @@ def piocheCarte(p, x=1):
         taken_cards.append(card)                                                                                        # On ajoute la carte à la liste des cartes piochées
         p.pop(0)                                                                                                        # On supprime la carte de la pioche
         return taken_cards                                                                                              # On renvoit la liste des cartes piochées
+
+
+"""------------------------------------------------------------------------------------------------------------------
+                                                      Partie A.2
+   ------------------------------------------------------------------------------------------------------------------"""
 
 
 """ Il s'agit ici d'écrire une fonction qui reçoit le nombre de joueurs, demande à l'utilisateur le nom de chaque joueur
@@ -114,3 +126,42 @@ def gagnant(scores):
             maximum = list_scores_inrange[range_2]
             maximum_step = range_2
     return {list_players_inrange[maximum_step], list_scores_inrange[maximum_step]}                                      # On retourne un dictionnaire qui contient le nom du gagnant et son score
+
+
+"""------------------------------------------------------------------------------------------------------------------
+                                                      Partie B.1
+   ------------------------------------------------------------------------------------------------------------------"""
+
+
+""" Il s'agit ici d'écrire une fonction qui demande à l'utilisateur si il veut continuer de jouer ou arrêter """
+
+def continuer():
+    ask = str(input("Voulez-vous continuer de joueur ? Oui / Non "))
+    if ask == "Oui":
+        return True
+    else:
+        return False
+
+
+""" Il s'agit ici d'écrire une fonction qui reçoit le nom d'un joueur et gère un tour de jeu """
+
+def tourJoueur(j):
+    print("Tour : ", tour_number, "Score : ", players_dico[j], "Joueur : ", j)                                          # On affiche le numéro du tour, le nom du joueur et son score dans la partie en cours
+
+    player_playing = continuer()                                                                                        # On demande au joueur si il désire continuer
+    if player_playing:                                                                                                  # Si c'est le cas, il fait un tour de jeu
+        new_score = (valeurCarte(piocheCarte(pioche, 1)) + players_dico[j])                                             # On actualise son score par le biais de la nouvelle carte piochée
+        if new_score <= 21:                                                                                             # On vérifie si son score est situé entre 0 et 21
+            in_range = True
+        else:
+            in_range = False
+
+    players_dico[j] = new_score                                                                                         # On actualise le score du joueur dans le dictionnaire
+
+    if not player_playing or not in_range:                                                                              # On supprime le joueur de la liste des joueurs si il a choisi d'arrêter ou si son score a dépassé 21
+        players.pop(j)
+
+
+"""------------------------------------------------------------------------------------------------------------------
+                                                      Partie B.2
+   ------------------------------------------------------------------------------------------------------------------"""
