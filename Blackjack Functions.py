@@ -11,7 +11,8 @@
 from random import sample
 
 """On définit les variables communes à tout notre programme"""
-global pioche, tour_number, players, players_dico
+
+global pioche, tour_number, players, players_dico, victoires_dico
 
 
 """------------------------------------------------------------------------------------------------------------------
@@ -123,6 +124,7 @@ en filtrant les scores supérieurs à 21"""
 
 
 def gagnant(scores):
+    winner_list = {}
     list_scores = list(scores.values())                                                                                 # Pour faciliter les manipulations, on crée une liste qui contient les scores
     list_players = list(scores.keys())                                                                                  # On crée une liste qui contient les joueurs
     list_scores_inrange = []                                                                                            # On crée une liste vide qui va contenir les scores inférieurs ou égaux à 21
@@ -135,8 +137,10 @@ def gagnant(scores):
     for range_2 in range(0, len(list_scores_inrange), 1):
         if maximum < list_scores_inrange[range_2]:                                                                      # On cherche le maximum des scores
             maximum = list_scores_inrange[range_2]
-            maximum_step = range_2
-    return {list_players_inrange[maximum_step], list_scores_inrange[maximum_step]}                                      # On retourne un dictionnaire qui contient le nom du gagnant et son score
+    for player in players_dico:
+        if players_dico[player] == maximum:
+            winner_list[player] = maximum
+    return winner_list                                                                                                  # On retourne un dictionnaire qui contient le nom du gagnant et son score
 
 
 """------------------------------------------------------------------------------------------------------------------
@@ -159,6 +163,13 @@ def continuer():
 
 
 def tourJoueur(j):
+    try:
+        tour_number
+    except UnboundLocalError or NameError:
+        tour_number = 1
+    else:
+        tour_number = tour_number + 1
+
     print("Tour : ", tour_number, "Score : ", players_dico[j], "Joueur : ", j)                                          # On affiche le numéro du tour, le nom du joueur et son score dans la partie en cours
 
     player_playing = continuer()                                                                                        # On demande au joueur si il désire continuer
@@ -188,3 +199,25 @@ def tourComplet():
         tourJoueur(range_1)                                                                                             # On permet à chaque joueur de jouer un tour
     while "to delete" in players:
         players.remove("to delete")                                                                                     # On filtre ici les "to delete" pour les supprimer sans causer d'effets de bord sur la fonction
+
+
+""" Il s'agit ici d'écrire une fonction qui détérmine si la partie est finie ou non et renvoie un booléen """
+
+
+def partieFinie():
+    if not players:                                                                                                     # On vérifie si la liste players est vide ou non
+        return True                                                                                                     # Si oui, il n'y a plus de joueur en jeu donc la partie est finie
+    else:
+        return False                                                                                                    # Sinon, la partie n'est pas finie
+
+
+""" Il s'agit ici d'écrire une fonction qui effectue une partie complète jusqu'à ce que la partie soit finie """
+
+
+def partieComplete():
+    victoires_dico = initScores(players)                                                                                # On initialise un dictionnaire de victoires avec le nom de chaque joueur et le nombre de victoires à 0
+    while not partieFinie():                                                                                            # On applique la fonction tourComplet() tant que la partie n'est pas finie
+        tourComplet()
+    winner_dico = gagnant(players_dico)                                                                                 # On initialise winner_dico le dictionnaire qui contient les gagnants de cette partie
+    for winner in winner_dico:
+        victoires_dico[winner] += 1                                                                                     # On ajoute 1 au nombre de victoires des joueurs qui ont atteints le plus haut score inférieur ou égal à 21
